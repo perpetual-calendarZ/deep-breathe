@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Sankalpa - Início da Prática</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Helvetica', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* O Container do Vídeo (A Moldura) */
+        .video-wrapper {
+            position: relative;
+            width: 80vw;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0,0,0,0.8);
+            border-radius: 8px;
+            z-index: 1; /* Fica atrás da capa */
+        }
+
+        /* O Vídeo em si (com zoom para esconder bordas) */
+        #player {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120%; 
+            height: 120%;
+            transform: translate(-50%, -50%);
+            pointer-events: none; /* Mantemos bloqueado para ninguém pausar sem querer */
+        }
+
+        /* A Capa de Proteção (O Botão Sankalpa) */
+        /* Esta camada fica POR CIMA do vídeo até ser clicada */
+        .cover-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000; /* Cobre o vídeo vermelho */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10; /* Fica na frente de tudo */
+            transition: opacity 1.5s ease; /* Some devagar e elegante */
+        }
+
+        .sankalpa-text {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            font-weight: 300;
+            text-align: center;
+            color: #ccc;
+        }
+
+        .btn-start {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.4);
+            color: #fff;
+            padding: 15px 40px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-start:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 30px rgba(255,255,255,0.6);
+        }
+
+        /* Classe para esconder a capa */
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* O aviso do Zoom (rodape) */
+        .zoom-status {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #444;
+            opacity: 0;
+            transition: opacity 2s;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-wrapper">
+        <div id="player"></div>
+
+        <div class="cover-layer" id="coverLayer">
+            <div class="sankalpa-text">
+                Assim que escolher seu Sankalpa,<br>clique para começarmos.
+            </div>
+            <button class="btn-start" onclick="iniciarExperiencia()">Iniciar Prática</button>
+        </div>
+    </div>
+
+    <div class="zoom-status" id="zoomStatus">
+        Conexão com Instrutor estabelecida. <br> Mantenha o Zoom minimizado.
+    </div>
+
+    <script>
+        // --- 1. CONFIGURAÇÃO DA ENGENHARIA DO YOUTUBE ---
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                // ATENÇÃO: COLE O ID DO VÍDEO AQUI EMBAIXO (Ex: dQw4w9WgXcQ)
+                videoId: 'w0o0_xqqPtk', 
+                playerVars: {
+                    'autoplay': 0, // Não tenta tocar sozinho
+                    'controls': 0, // Sem barra
+                    'rel': 0,      // Sem recomendados
+                    'showinfo': 0, // Sem titulo
+                    'modestbranding': 1,
+                    'iv_load_policy': 3
+                }
+            });
+        }
+
+        // --- 2. O RITUAL DE INÍCIO (CLIQUE NO BOTÃO) ---
+        function iniciarExperiencia() {
+            // A. Dá o Play no vídeo
+            player.playVideo();
+
+            // B. Faz a capa preta desaparecer suavemente
+            document.getElementById('coverLayer').classList.add('fade-out');
+
+            // C. Mostra o aviso discreto no rodapé
+            document.getElementById('zoomStatus').style.opacity = '1';
+
+            // D. Abre o Zoom automaticamente após 4 segundos (tempo do fade + inicio do vídeo)
+            setTimeout(function(){
+                // ATENÇÃO: COLE O LINK DO ZOOM AQUI
+                window.open('https://us05web.zoom.us/j/83139363359?pwd=Dt59PabWq0RUHWsdScXaWAzgEmLagz.1');
+            }, 4000);
+        }
+    </script>
+
+</body>
+</html>
